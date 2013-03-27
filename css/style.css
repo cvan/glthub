@@ -146,6 +146,19 @@ header {
     line-height: 60px;
 }
 
+.query input {
+    background: none;
+    border: 0;
+    color: #fff;
+    min-width: 400px;
+    padding: 10px 0;
+}
+
+.query input:focus {
+    background: #fff;
+    color: #333;
+}
+
 .logo a {
     display: block;
     font: 600 36px/60px nimblepenregular, nimblepen, sans-serif;

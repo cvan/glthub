@@ -95,7 +95,7 @@
 
     var qs = location.search.substr(1);
     if (!qs) {
-        qs = 'marketplace%20target_milestone:2013-03-28';
+        qs = ':marketplace%20target_milestone:2013-03-28';
     }
 
     // Strip trailing slash, if that's there.
@@ -104,7 +104,8 @@
     }
 
     var qsPretty = decodeURIComponent(qs);
-    $('.query').text(qsPretty);
+    $('.query input').val(qsPretty);
+    document.title = qsPretty + ' | glthub';
     var bz_url = BZ_SEARCH_URL + qs;
 
     // Get most recent query.
@@ -133,6 +134,11 @@
         $(location.hash || '#bugs-todo').removeClass('hidden');
     }
     togglePhase();
+
+    $('form').on('submit', function(e) {
+        location.search = $('.query input').val();
+        e.preventDefault();
+    });
 
     window.addEventListener('hashchange', function() {
         togglePhase();
