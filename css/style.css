@@ -90,6 +90,7 @@ img::-moz-selection {
 .c { display: block; }
 
 * {
+    -moz-box-sizing: border-box;
     box-sizing: border-box;
     word-wrap: break-word;
 }
@@ -177,31 +178,34 @@ nav ul {
     height: 100%;
 }
 
-nav li {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: box;
-}
-
 nav a {
-    display: -webkit-box;
-    -webkit-box-align: center;
-    display: -moz-box;
-    -moz-box-align: center;
-    display: -ms-flexbox;
-    -ms-flex-align: center;
-    display: box;
-    box-align: center;
     font-weight: 600;
     height: 100%;
-    width: 150px;
-}
-
-nav span {
-    display: block;
     text-align: center;
-    width: 100%;
+    width: 150px;
+
+    display: -ms-box;
+    display: -moz-box;
+    display: -webkit-box;
+    display: flex;
+    display: -ms-flex;
+    display: -moz-flex;
+    display: -webkit-flex;
+
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -moz-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+
+    -webkit-box-pack: center;
+    -moz-box-pack: center;
+    -webkit-flex-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
 }
 
 .bugs-todo {
