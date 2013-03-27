@@ -194,7 +194,7 @@ header {
 }
 
 .wordmark a {
-    display: block;
+    display: inline-block;
     font: 600 36px/65px nimblepenregular, nimblepen, sans-serif;
 }
 
