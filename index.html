@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>glthub</title>
+        <meta charset="utf-8">
+        <meta name="robots" content="noarchive">
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <header>
+            <h1 class="logo">glthub</h1>
+        </header>
+        <footer>
+            Made by <a href="https://github.com/cvan">cvan</a></a>
+        </footer>
+        <script type="text/template" id="bug-status-template">
+            <section id="bugs-<%- data.cls %>" class="bugs-group bugs-<%- data.cls %>">
+                <h2><%- data.status %> <b class="cnt"><%- data.count %></b></h2>
+                <% if (data.bugs.length) { %>
+                    <% _.each(data.bugs, function(bug) { %>
+                        <li>
+                            <a href="http://bugzil.la/<%- bug.id %>">
+                                <%- bug.id %>
+                                <%- bug.priority %>
+                                <%- bug.summary %>
+                                <%- bug.assigned_to.real_name || bug.assigned_to.name %>
+                                <%- bug.target_milestone %>
+                            </a>
+                        </li>
+                    <% }) %>
+                <% } %>
+            </section>
+        </script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/1.0.1/lodash.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/zepto/1.0rc1/zepto.min.js"></script>
+        <script type="text/javascript">
+            //(function() {
+
+                var BZ_FIELDS = 'id,assigned_to,priority,summary,status,resolution,last_change_time,target_milestone,whiteboard';
+                var BZ_SEARCH_URL = 'https://api-dev.bugzilla.mozilla.org/latest/bug?include_fields=' + BZ_FIELDS + '&quicksearch=ALL%20';
+
+                var qs = location.search.substr(1);
+                if (qs) {
+                    // TEMP
+                    qs = qs.slice(0, -1);
+
+                    var qsPretty = decodeURIComponent(qs);
+                    var bz_url = BZ_SEARCH_URL + qs;
+                    // var bugs = $.getJSON(bz_url, function(data) {
+                    //     console.log(data);
+                    //     var storedQueries = JSON.parse(localStorage.queries || '[]');
+                    //     if (!(bz_url in storedQueries)) {
+                    //         storedQueries.push(bz_url);
+                    //     }
+                    //     localStorage.queries = JSON.stringify(storedQueries);
+                    //     localStorage[bz_url] = JSON.stringify(data);
+                    // });
+                }
+
+                // Get most recent query.
+                if (localStorage.queries) {
+                    var queries = JSON.parse(localStorage.queries);
+                    var data = JSON.parse(localStorage[queries[queries.length - 1]]);
+                }
+
+                var statuses = [
+                    'UNCONFIRMED',
+                    'NEW',
+                    'ASSIGNED',
+                    'REOPENED',
+                    'RESOLVED FIXED',
+                    'RESOLVED INVALID',
+                    'RESOLVED WONTFIX',
+                    'RESOLVED DUPLICATE',
+                    'RESOLVED WORKSFORME',
+                    'RESOLVED INCOMPLETE',
+                    'VERIFIED FIXED',
+                    'VERIFIED INVALID',
+                    'VERIFIED WONTFIX',
+                    'VERIFIED DUPLICATE',
+                    'VERIFIED WORKSFORME',
+                    'VERIFIED INCOMPLETE'
+                ];
+
+                _.templateSettings.variable = 'data';
+
+                var template = document.getElementById('bug-status-template').innerHTML,
+                    bugs = {},
+                    where,
+                    container,
+                    newHTML,
+                    $footer = $('footer'),
+                    status_chunks;
+
+                _.each(statuses, function(v) {
+                    status_chunks = v.split(' ');
+                    where = {status: status_chunks[0]};
+                    if (status_chunks.length > 1) {
+                        where.resolution = status_chunks[1];
+                    }
+                    bugs[v] = _.where(data.bugs, where);
+
+                    newHTML = _.template(template, {
+                        cls: v.replace(' ', '-').toLowerCase(),
+                        status: v,
+                        count: bugs[v].length,
+                        bugs: _.sortBy(bugs[v], function(v) { return v.last_change_time; }).reverse()
+                    });
+                    $('<section>' + newHTML + '</section>').insertBefore($footer);
+
+                    container = $('.bugs-' + v.replace(' ', '-').toLowerCase());
+                });
+
+                //id,assigned_to,priority,summary,status,resolution,last_change_time,target_milestone,whiteboard
+
+                // JSON.parse(localStorage[JSON.parse(localStorage.queries)[0]])
+
+                //if (location.search.)
+                //location.search
+
+            //})();
+        </script>
+    </body>
+</html>

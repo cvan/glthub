@@ -1,0 +1,203 @@
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p,
+blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img,
+ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i,
+center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption,
+tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section,
+summary, time, mark, audio, video {
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+
+body {
+    line-height: 1;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+caption, th, td {
+    font-weight: normal;
+    text-align: left;
+    vertical-align: middle;
+}
+
+q, blockquote {
+    quotes: none;
+}
+
+q:before, q:after,
+blockquote:before, blockquote:after {
+    content: "";
+    content: none;
+}
+
+a img {
+    border: none
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu,
+nav, section, summary {
+    display: block;
+}
+
+img {
+    width: 100%;
+}
+
+
+img::selection {
+    background: transparent;
+}
+
+img::-moz-selection {
+    background: transparent;
+}
+
+/*
+input, button {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+}
+*/
+
+html, body {
+    height: 100%;
+}
+
+html {
+    background: #fff;
+}
+
+/* >> The Magnificent CLEARFIX <<
+   Lifted from html5boilerplate.com
+   License is Public domain */
+.c:after { content: ""; display: block; height: 0; clear: both; visibility: hidden; }
+.c { display: inline-block; }
+* html .c { height: 1%; } /* Hides from IE-mac \*/
+.c { display: block; }
+
+* {
+    box-sizing: border-box;
+    word-wrap: break-word;
+}
+
+::selection {
+    background-color: turquoise;
+    color: #fff;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font: 14px "Open Sans", sans-serif;
+    padding: 2em;
+}
+
+body, input {
+    text-align: center;
+}
+
+a {
+    color: #666;
+}
+
+a:hover {
+    color: #222;
+}
+
+h2 {
+    font-family: handslab-regular;
+}
+
+.logo {
+    color: darkturquoise;
+    font: 600 48px/64px nimblepen;
+}
+
+body {
+    padding: 2em;
+}
+
+form {
+    margin: 0 auto;
+}
+
+footer {
+    color: #999;
+    font-size: 80%;
+    padding: 0 0 2em;
+}
+
+footer:before,
+footer:after {
+    color: #c00;
+    content: "\00a0♥\00a0";
+    font-size: 8px;
+    position: relative;
+    top: -1px;
+}
+
+input[type=text],
+input[type=number] {
+    .transition(~'.25s border, .5s box-shadow');
+    .box-shadow(-1px -1px 1px #eee inset, 1px 1px 1px #eee inset);
+    background: #fff;
+    border: 1px solid #aaa;
+    color: #666;
+    font: inherit;
+    font-size: 18px;
+    line-height: 20px;
+    margin: 0;
+    padding: 8px 10px;
+}
+
+input[type=text]:focus {
+    .box-shadow(-1px -1px 1px #ddd inset, 1px 1px 1px #ddd inset);
+    background: lighten(#eee, 5%);
+    border-color: #777;
+    color: #000;
+    outline: 0;
+    outline: thin dotted \9;
+}
+
+label {
+    display: block;
+    margin-bottom: 1.5em;
+}
+
+label b {
+    display: block;
+    font-size: 11px;
+    padding-bottom: .5em;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+pre, code {
+    font-family: monospace;
+}
+
+p {
+    margin-top: 1em;
+}
+
+header, footer {
+    padding: 2em 0;
+}
+
+.bugs-group {
+    padding: 2em;
+}

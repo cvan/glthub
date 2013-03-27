@@ -1,0 +1,12 @@
+*.elc
+*.swp
+*~
+.#*
+.DS_Store
+.emacs.d/.autosaves
+.emacs.d/.emacs-places
+.emacs.d/history
+.emacs.d/site/nxhtml
+.emacs.d/tramp
+.emacs.desktop
+.zsh/cache
