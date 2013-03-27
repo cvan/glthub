@@ -266,7 +266,7 @@ nav .bugs-todo a:hover {
 }
 
 nav .bugs-doing a:hover {
-    background: hsl(30, 60%, 50%);
+    background: hsl(30, 60%, 40%);
 }
 
 nav .bugs-done a:hover {
