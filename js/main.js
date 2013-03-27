@@ -1,5 +1,18 @@
 (function() {
 
+    var _gaq = [
+        ['_setAccount', 'UA-39669613-1'],
+        ['_trackPageview']
+    ];
+
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+
+
     var BZ_FIELDS = 'id,assigned_to,priority,summary,status,resolution,last_change_time,target_milestone,whiteboard';
     var BZ_SEARCH_URL = 'https://api-dev.bugzilla.mozilla.org/latest/bug?include_fields=' + BZ_FIELDS + '&quicksearch=ALL%20';
 
