@@ -10,26 +10,50 @@
     </head>
     <body>
         <header>
-            <h1 class="logo">glthub</h1>
+            <h1 class="query mono"></h1>
+            <h1 class="logo"><a href="https://github.com/cvan" title="&#x2764; Made by cvan &#x2764;">glthub</a></h1>
         </header>
-        <footer>
-            Made by <a href="https://github.com/cvan">cvan</a></a>
-        </footer>
+        <nav>
+            <ul>
+                <li class="bugs-todo">
+                    <a href="#bugs-todo" title="To Do"><span>To Do <b class="cnt">0</b></span></a>
+                </li>
+                <li class="bugs-doing">
+                    <a href="#bugs-doing" title="Doing"><span>Doing <b class="cnt">0</b></span></a>
+                </li>
+                <li class="bugs-done">
+                    <a href="#bugs-done" title="Done"><span>Done <b class="cnt">0</b></span></a>
+                </li>
+                <li class="bugs-verified">
+                    <a href="#bugs-verified" title="todo"><span>Verified <b class="cnt">0</b></span></a>
+                </li>
+            </ul>
+        </nav>
+        <section id="bugs-todo" class="bugs-phase hidden bugs-todo">
+        </section>
+        <section id="bugs-doing" class="bugs-phase hidden bugs-doing">
+        </section>
+        <section id="bugs-done" class="bugs-phase hidden bugs-done">
+        </section>
+        <section id="bugs-verified" class="bugs-phase hidden bugs-verified">
+        </section>
         <script type="text/template" id="bug-status-template">
-            <section id="bugs-<%- data.cls %>" class="bugs-group bugs-<%- data.cls %>">
+            <section id="bugs-<%- data.cls %>" class="bugs-status bugs-<%- data.cls %>">
                 <h2><%- data.status %> <b class="cnt"><%- data.count %></b></h2>
                 <% if (data.bugs.length) { %>
-                    <% _.each(data.bugs, function(bug) { %>
-                        <li>
-                            <a href="http://bugzil.la/<%- bug.id %>">
-                                <%- bug.id %>
-                                <%- bug.priority %>
-                                <%- bug.summary %>
-                                <%- bug.assigned_to.real_name || bug.assigned_to.name %>
-                                <%- bug.target_milestone %>
-                            </a>
-                        </li>
-                    <% }) %>
+                    <ul>
+                        <% _.each(data.bugs, function(bug) { %>
+                            <li>
+                                <a href="http://bugzil.la/<%- bug.id %>" class="bug-<%- bug.priority.toLowerCase() %>">
+                                    <span class="bug-priority"><%- bug.priority %></span>
+                                    <span class="bug-id mono"><%- bug.id %></span>
+                                    <span class="bug-summary"><%- bug.summary %></span>
+                                    <span class="bug-milestone"><%- bug.target_milestone %></span>
+                                    <span class="bug-assignee"><%- bug.assigned_to.real_name || bug.assigned_to.name %></span>
+                                </a>
+                            </li>
+                        <% }) %>
+                    </ul>
                 <% } %>
             </section>
         </script>
@@ -40,30 +64,6 @@
 
                 var BZ_FIELDS = 'id,assigned_to,priority,summary,status,resolution,last_change_time,target_milestone,whiteboard';
                 var BZ_SEARCH_URL = 'https://api-dev.bugzilla.mozilla.org/latest/bug?include_fields=' + BZ_FIELDS + '&quicksearch=ALL%20';
-
-                var qs = location.search.substr(1);
-                if (qs) {
-                    // TEMP
-                    qs = qs.slice(0, -1);
-
-                    var qsPretty = decodeURIComponent(qs);
-                    var bz_url = BZ_SEARCH_URL + qs;
-                    // var bugs = $.getJSON(bz_url, function(data) {
-                    //     console.log(data);
-                    //     var storedQueries = JSON.parse(localStorage.queries || '[]');
-                    //     if (!(bz_url in storedQueries)) {
-                    //         storedQueries.push(bz_url);
-                    //     }
-                    //     localStorage.queries = JSON.stringify(storedQueries);
-                    //     localStorage[bz_url] = JSON.stringify(data);
-                    // });
-                }
-
-                // Get most recent query.
-                if (localStorage.queries) {
-                    var queries = JSON.parse(localStorage.queries);
-                    var data = JSON.parse(localStorage[queries[queries.length - 1]]);
-                }
 
                 var statuses = [
                     'UNCONFIRMED',
@@ -84,6 +84,33 @@
                     'VERIFIED INCOMPLETE'
                 ];
 
+                var parentsByStatus = {
+                    'UNCONFIRMED': 'todo',
+                    'NEW': 'todo',
+                    'ASSIGNED': 'doing',
+                    'REOPENED': 'todo',
+                    'RESOLVED FIXED': 'done',
+                    'RESOLVED INVALID': 'done',
+                    'RESOLVED WONTFIX': 'done',
+                    'RESOLVED DUPLICATE': 'done',
+                    'RESOLVED WORKSFORME': 'done',
+                    'RESOLVED INCOMPLETE': 'done',
+                    'VERIFIED FIXED': 'verified',
+                    'VERIFIED INVALID': 'verified',
+                    'VERIFIED WONTFIX': 'verified',
+                    'VERIFIED DUPLICATE': 'verified',
+                    'VERIFIED WORKSFORME': 'verified',
+                    'VERIFIED INCOMPLETE': 'verified'
+                };
+
+                var statusesByParent = {};
+                _.each(parentsByStatus, function(v, k) {
+                    if (!(v in statusesByParent)) {
+                        statusesByParent[v] = [];
+                    }
+                    statusesByParent[v].push(k);
+                });
+
                 _.templateSettings.variable = 'data';
 
                 var template = document.getElementById('bug-status-template').innerHTML,
@@ -91,34 +118,87 @@
                     where,
                     container,
                     newHTML,
-                    $footer = $('footer'),
                     status_chunks;
 
-                _.each(statuses, function(v) {
-                    status_chunks = v.split(' ');
-                    where = {status: status_chunks[0]};
-                    if (status_chunks.length > 1) {
-                        where.resolution = status_chunks[1];
-                    }
-                    bugs[v] = _.where(data.bugs, where);
+                function renderData(data) {
+                    $('.bugs-phase').empty();
+                    _.each(statuses, function(v) {
+                        status_chunks = v.split(' ');
+                        where = {status: status_chunks[0]};
+                        if (status_chunks.length > 1) {
+                            where.resolution = status_chunks[1];
+                        }
+                        bugs[v] = _.where(data.bugs, where);
 
-                    newHTML = _.template(template, {
-                        cls: v.replace(' ', '-').toLowerCase(),
-                        status: v,
-                        count: bugs[v].length,
-                        bugs: _.sortBy(bugs[v], function(v) { return v.last_change_time; }).reverse()
+                        newHTML = _.template(template, {
+                            cls: v.replace(' ', '-').toLowerCase(),
+                            status: v,
+                            count: bugs[v].length,
+                            bugs: _.sortBy(bugs[v], function(v) { return v.priority; })
+                        });
+                        $(newHTML).appendTo($('#bugs-' + parentsByStatus[v]));
+
+                        container = $('.bugs-' + v.replace(' ', '-').toLowerCase());
                     });
-                    $('<section>' + newHTML + '</section>').insertBefore($footer);
 
-                    container = $('.bugs-' + v.replace(' ', '-').toLowerCase());
+                    var total = data.bugs.length,
+                        phaseSum,
+                        width;
+                    _.each(statusesByParent, function(v, k) {
+                        phaseSum = _.reduce(v, function(sum, v){ return sum + bugs[v].length; }, 0);
+                        width = (phaseSum / total) * 100;
+                        if (width === 0) {
+                            $('nav .bugs-' + k).hide();
+                        } else {
+                            $('nav .bugs-' + k).css('height', width + '%').find('.cnt').text(phaseSum);
+                        }
+                    });
+                }
+
+                var qs = location.search.substr(1);
+                if (!qs) {
+                    qs = 'marketplace%20target_milestone:2013-03-28';
+                }
+
+                // Strip trailing slash, if that's there.
+                if (qs.substr(-1) == '/') {
+                    qs = qs.slice(0, -1);
+                }
+
+                var qsPretty = decodeURIComponent(qs);
+                $('.query').text(qsPretty);
+                var bz_url = BZ_SEARCH_URL + qs;
+
+                // Get most recent query.
+                // if (localStorage.queries) {
+                //     var queries = JSON.parse(localStorage.queries);
+                //     var data = JSON.parse(localStorage[queries[queries.length - 1]]);
+                //     renderData(data);
+                // }
+
+                if (localStorage.queries && bz_url in localStorage) {
+                    renderData(JSON.parse(localStorage[bz_url]));
+                }
+
+                $.getJSON(bz_url, function(data) {
+                    var storedQueries = JSON.parse(localStorage.queries || '[]');
+                    if (!(bz_url in storedQueries)) {
+                        storedQueries.push(bz_url);
+                    }
+                    localStorage.queries = JSON.stringify(storedQueries);
+                    localStorage[bz_url] = JSON.stringify(data);
+                    renderData(data);
                 });
 
-                //id,assigned_to,priority,summary,status,resolution,last_change_time,target_milestone,whiteboard
+                function togglePhase() {
+                    $('.bugs-phase:not(.hidden)').addClass('hidden');
+                    $(location.hash || '#bugs-todo').removeClass('hidden');
+                }
+                togglePhase();
 
-                // JSON.parse(localStorage[JSON.parse(localStorage.queries)[0]])
-
-                //if (location.search.)
-                //location.search
+                window.addEventListener('hashchange', function() {
+                    togglePhase();
+                }, false);
 
             //})();
         </script>

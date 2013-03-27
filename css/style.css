@@ -1,19 +1,12 @@
 @font-face {
     font-family: 'HandSlabRegular';
-    src: url('fonts/handslab-regular-webfont.eot');
-    src: url('fonts/handslab-regular-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/handslab-regular-webfont.woff') format('woff'),
-         url('fonts/handslab-regular-webfont.ttf') format('truetype'),
-         url('fonts/handslab-regular-webfont.svg#HandSlabRegular') format('svg');
-}
-
-@font-face {
-    font-family: 'nimblepenregular';
-    src: url('fonts/nimblepen-webfont.eot');
-    src: url('fonts/nimblepen-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/nimblepen-webfont.woff') format('woff'),
-         url('fonts/nimblepen-webfont.ttf') format('truetype'),
-         url('fonts/nimblepen-webfont.svg#nimblepenregular') format('svg');
+    src: url('handslab-regular-webfont.eot');
+    src: url('handslab-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('handslab-regular-webfont.woff') format('woff'),
+         url('handslab-regular-webfont.ttf') format('truetype'),
+         url('handslab-regular-webfont.svg#HandSlabRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
 }
 
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p,
@@ -73,6 +66,7 @@ img {
     width: 100%;
 }
 
+
 img::selection {
     background: transparent;
 }
@@ -117,7 +111,7 @@ a {
 }
 
 h2, nav a {
-    font-family: "HandSlabRegular", Handslab-Regular;
+    font-family: handslab-regular;
 }
 
 h2 {
@@ -148,7 +142,7 @@ header {
 
 .logo a {
     display: block;
-    font: 600 36px/60px nimblepenregular, nimblepen, sans-serif;
+    font: 600 36px/60px nimblepen;
 }
 
 nav {
