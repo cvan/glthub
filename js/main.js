@@ -14,7 +14,7 @@ var _gaq = [
 
 
     var BZ_FIELDS = 'id,assigned_to,priority,summary,status,resolution,last_change_time,target_milestone,whiteboard';
-    var BZ_SEARCH_URL = 'https://api-dev.bugzilla.mozilla.org/latest/bug?include_fields=' + BZ_FIELDS + '&quicksearch=ALL%20';
+    var BZ_SEARCH_URL = 'https://api-dev.bugzilla.mozilla.org/latest/bug?include_fields=' + BZ_FIELDS + '&quicksearch=';
 
     var statuses = [
         'UNCONFIRMED',
@@ -121,6 +121,10 @@ var _gaq = [
     var qsPretty = decodeURIComponent(qs);
     $('.query input').val(qsPretty);
     document.title = qsPretty + ' | glthub';
+    // If it's not a list of bugs, prefix with "ALL ".
+    if (qs.indexOf(',') === -1) {
+        qs = 'ALL%20' + qs;
+    }
     var bz_url = BZ_SEARCH_URL + qs;
 
     // Get most recent query.
