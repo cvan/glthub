@@ -193,9 +193,9 @@ header {
     color: #333;
 }
 
-.logo a {
+.wordmark a {
     display: block;
-    font: 600 36px/60px nimblepenregular, nimblepen, sans-serif;
+    font: 600 36px/65px nimblepenregular, nimblepen, sans-serif;
 }
 
 nav {
