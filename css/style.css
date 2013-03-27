@@ -279,13 +279,15 @@ nav .bugs-verified a:hover {
     width: 100%;
 }
 
-nav .cnt {
-    color: #ddd;
+.cnt,
+.cnt::before,
+.cnt::after {
+    vertical-align: top;
 }
 
 .cnt {
     color: #444;
-    font-family: "Open Sans", "OpenSansWeb", sans-serif;
+    font: 12px/20px "Open Sans", "OpenSansWeb", sans-serif;
 }
 
 .cnt::before {
@@ -294,6 +296,11 @@ nav .cnt {
 
 .cnt::after {
     content: ")";
+}
+
+nav .cnt {
+    color: #dadada;
+    line-height: 22px;
 }
 
 .hidden {
