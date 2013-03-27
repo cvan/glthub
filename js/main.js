@@ -1,9 +1,9 @@
-(function() {
+var _gaq = [
+    ['_setAccount', 'UA-39669613-1'],
+    ['_trackPageview']
+];
 
-    var _gaq = [
-        ['_setAccount', 'UA-39669613-1'],
-        ['_trackPageview']
-    ];
+(function() {
 
     var ga = document.createElement('script');
     ga.type = 'text/javascript';
