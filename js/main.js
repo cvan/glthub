@@ -99,8 +99,9 @@ var _gaq = [
             phaseSum = _.reduce(v, function(sum, v){ return sum + bugs[v].length; }, 0);
             width = (phaseSum / total) * 100;
             if (width === 0) {
-                $('nav .bugs-' + k).hide();
+                $('.bugs-' + k).addClass('hidden');
             } else {
+                $('.bugs-' + k).removeClass('hidden');
                 $('nav .bugs-' + k).css('height', width + '%').find('.cnt').text(phaseSum);
             }
         });
@@ -143,6 +144,20 @@ var _gaq = [
     //     renderData(data);
     // }
 
+    function togglePhase() {
+        $('.bugs-phase:not(.hidden)').addClass('hidden');
+        $(location.hash || '#bugs-todo').removeClass('hidden');
+        // If there's no hash or that group is hidden, then get first visible one
+        console.log($(location.hash + '.hidden').length)
+        if (!location.hash || $(location.hash + '.hidden').length) {
+            var visible = $('.bugs-phase:not(.hidden)');
+            if (visible.length) {
+                location.hash = visible[0].id;
+            }
+        }
+    }
+    togglePhase();
+
     if (localStorage.queries && bz_url in localStorage) {
         renderData(JSON.parse(localStorage[bz_url]));
     }
@@ -156,12 +171,6 @@ var _gaq = [
         localStorage[bz_url] = JSON.stringify(data);
         renderData(data);
     });
-
-    function togglePhase() {
-        $('.bugs-phase:not(.hidden)').addClass('hidden');
-        $(location.hash || '#bugs-todo').removeClass('hidden');
-    }
-    togglePhase();
 
     $('form').on('submit', function(e) {
         location.search = $('.query input').val();
