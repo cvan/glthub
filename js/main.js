@@ -121,8 +121,17 @@ var _gaq = [
     var qsPretty = decodeURIComponent(qs);
     $('.query input').val(qsPretty);
     document.title = qsPretty + ' | glthub';
-    // If it's not a list of bugs, prefix with "ALL ".
-    if (qs.indexOf(',') === -1) {
+    // If we're not passing a list of bugs, and we're not explicitly searching
+    // by a status, then prefix quick search with "ALL ".
+    if (qs.indexOf(',') === -1 &&
+        qs.indexOf('UNCONFIRMED ') !== 0 &&
+        qs.indexOf('ASSIGNED ') !== 0 &&
+        qs.indexOf('NEW ') !== 0 &&
+        qs.indexOf('REOPENED ') !== 0 &&
+        qs.indexOf('VERIFIED ') !== 0 &&
+        qs.indexOf('OPEN ') !== 0 &&
+        qs.indexOf('FIX ') !== 0 &&
+        qs.indexOf('FIXED ') !== 0) {
         qs = 'ALL%20' + qs;
     }
     var bz_url = BZ_SEARCH_URL + qs;
