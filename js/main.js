@@ -114,6 +114,11 @@ var _gaq = [
     // Remember this query for next time.
     localStorage.lastQuery = qs;
 
+    // Redirect to this query's permalink.
+    if (location.search.substr(1) != qs) {
+        location.search = qs;
+    }
+
     // Strip trailing slash, if that's there.
     if (qs.substr(-1) == '/') {
         qs = qs.slice(0, -1);
