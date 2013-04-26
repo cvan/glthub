@@ -172,8 +172,11 @@ var _gaq = [
         if (!(bz_url in storedQueries)) {
             storedQueries.push(bz_url);
         }
-        localStorage.queries = JSON.stringify(storedQueries);
-        localStorage[bz_url] = JSON.stringify(data);
+        try {
+            localStorage.queries = JSON.stringify(storedQueries);
+            localStorage[bz_url] = JSON.stringify(data);
+        } catch (e) {
+        }
         renderData(data);
     });
 
