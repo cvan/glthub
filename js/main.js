@@ -109,7 +109,7 @@ var _gaq = [
 
     var qs = location.search.substr(1) || localStorage.lastQuery;
     if (!qs) {
-        qs = ':marketplace%20target_milestone:2013-03-28';
+        qs = '[fireplace]';
     }
     // Remember this query for next time.
     localStorage.lastQuery = qs;
