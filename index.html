@@ -44,7 +44,7 @@
                     <ul>
                         <% _.each(data.bugs, function(bug) { %>
                             <li>
-                                <a href="http://bugzil.la/<%- bug.id %>" class="bug-<%- bug.priority.toLowerCase() %>">
+                                <a href="http://bugzil.la/<%- bug.id %>" target="_blank" class="bug-<%- bug.priority.toLowerCase() %>">
                                     <span class="bug-priority"><%- bug.priority %></span>
                                     <span class="bug-id mono"><%- bug.id %></span>
                                     <span class="bug-summary"><%- bug.summary %></span>
